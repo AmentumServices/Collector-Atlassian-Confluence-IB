@@ -4,9 +4,3 @@
 [submodule "confluence-lts-ib"]
 	path = confluence-lts-ib
 	url = https://repo1.dso.mil/dsop/atlassian/confluence-data-center/confluence-lts.git
-[submodule "fisheye-crucible-ib"]
-	path = fisheye-crucible-ib
-	url = https://repo1.dso.mil/dsop/atlassian/fisheye-crucible.git
-[submodule "crowd-ib"]
-	path = crowd-ib
-	url = https://repo1.dso.mil/dsop/atlassian/crowd-data-center.git
