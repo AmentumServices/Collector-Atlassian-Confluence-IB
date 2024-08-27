@@ -98,9 +98,43 @@ jobs:
           name: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle
           path: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle
 
+  Hash:
+    runs-on: ubuntu-latest
+    needs: [Date, Code, Skopeo]
+    permissions:
+      contents: write
+      pull-requests: read
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Install mkisofs
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y mkisofs isomd5sum
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+
+      - name: Show Artifacts
+        run: ls -Alh ${{ vars.COLLECTOR }}-*.*
+
+      - name: Generate Artifact Hash File
+        run: |
+          sha256sum -b ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}* | tee \
+            ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.sha
+
+      - name: Upload Artifact Hash File
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.sha
+          path: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.sha
+
   Release:
     runs-on: ubuntu-latest
-    needs: [Date, Skopeo, Code]
+    needs: [Date, Hash]
     permissions:
       contents: write
       pull-requests: read
@@ -116,10 +150,9 @@ jobs:
       - name: Show Artifacts
         run: ls -Alh ${{ vars.COLLECTOR }}-*.*
 
-
   Sharepoint:
     runs-on: ubuntu-latest
-    needs: [Date, Skopeo, Code]
+    needs: [Date, Hash]
     permissions:
       contents: write
       pull-requests: read
@@ -131,4 +164,3 @@ jobs:
 
       - name: Show Artifacts
         run: ls -Alh ${{ vars.COLLECTOR }}-*.*
-
