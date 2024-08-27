@@ -1,4 +1,4 @@
 registry1.dso.mil:
     images-by-tag-regex:
-        ironbank/atlassian/confluence-data-center/confluence-node-lts: ^8.5.11$
-        ironbank/atlassian/confluence-data-center/confluence-node: ^8.9.3$
+        ironbank/atlassian/confluence-data-center/confluence-node-lts: ^8.5.14$
+        ironbank/atlassian/confluence-data-center/confluence-node: ^8.9.4$
